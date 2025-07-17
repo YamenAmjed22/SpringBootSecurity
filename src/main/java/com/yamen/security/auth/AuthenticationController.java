@@ -1,5 +1,6 @@
 package com.yamen.security.auth;
 
+import com.yamen.security.user.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -15,7 +16,7 @@ public class AuthenticationController {
     private final AuthenticationService authenticationService;
 
     @PostMapping("/register")
-    public ResponseEntity<AuthenticationResponse> register(@RequestBody RegisterRequest request) throws Exception {
+    public ResponseEntity<User> register(@RequestBody RegisterRequest request) throws Exception {
        return  ResponseEntity.ok(authenticationService.register(request));
     }
 
