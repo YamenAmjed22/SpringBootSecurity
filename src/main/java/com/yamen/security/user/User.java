@@ -35,7 +35,7 @@ public class User implements UserDetails { // user details is the interface
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {  // this will return list of roles
-        return List.of(new SimpleGrantedAuthority(role.name()));
+        return List.of(new SimpleGrantedAuthority("ROLE_"+ role.name()));
     }
 
     @Override
