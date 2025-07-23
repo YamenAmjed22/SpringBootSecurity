@@ -1,10 +1,9 @@
 package com.yamen.security.auth;
 
 import com.yamen.security.config.JwtService;
-import com.yamen.security.user.Role;
-import com.yamen.security.user.User;
-import com.yamen.security.user.UserRepository;
-import io.jsonwebtoken.Jwts;
+import com.yamen.security.Enum.Role;
+import com.yamen.security.Entity.User;
+import com.yamen.security.Repos.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;

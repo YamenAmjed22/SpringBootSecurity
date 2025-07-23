@@ -1,5 +1,6 @@
-package com.yamen.security.user;
+package com.yamen.security.Entity;
 
+import com.yamen.security.Enum.Role;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;

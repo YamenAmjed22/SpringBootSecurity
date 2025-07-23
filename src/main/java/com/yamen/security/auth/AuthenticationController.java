@@ -1,6 +1,6 @@
 package com.yamen.security.auth;
 
-import com.yamen.security.user.User;
+import com.yamen.security.Entity.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;

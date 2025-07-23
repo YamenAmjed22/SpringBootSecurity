@@ -1,5 +1,6 @@
-package com.yamen.security.user;
+package com.yamen.security.Repos;
 
+import com.yamen.security.Entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

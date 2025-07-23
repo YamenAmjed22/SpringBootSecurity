@@ -1,4 +1,4 @@
-package com.yamen.security.user;
+package com.yamen.security.Enum;
 
 public enum Role {
     USER,
