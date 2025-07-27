@@ -8,8 +8,12 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.Random;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -19,15 +23,40 @@ public class AuthenticationService {
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
+    private final UserDetailsService userDetailsService;
+
+
+    public String generateOtp() {
+        Random random = new Random();
+        int otp = random.nextInt(999999) + 100000;
+        return String.valueOf(otp);
+    }
+
+    public String validateOtp(OtpCheckReq otpCheckReq) {
+
+        User user = userRepository.findByEmail(otpCheckReq.email).orElseThrow(RuntimeException::new);
+        if (otpCheckReq.otp.equals(user.getOtp())  ){
+            user.setValidOtp(true);
+            userRepository.save(user);
+            return "The otp is valid";
+        }
+        else {
+            user.setValidOtp(false);
+            userRepository.save(user);
+            return "The otp is invalid";
+        }
+    }
 
     public User register(RegisterRequest request) {
-
+    // TODO : here where we will check unique for user name
         var user = User.builder()
                 .firstName(request.getFirstName())
                 .lastName(request.getLastName())
                 .email(request.getEmail())
                 .password(passwordEncoder.encode(request.getPassword()))
                 .role(Role.USER)
+                .Otp(generateOtp())
+                .validOtp(false)
                 .build();
         userRepository.save(user);
 
@@ -35,19 +64,27 @@ public class AuthenticationService {
     }
 
     public AuthenticationResponse authenticate(AuthenticationRequest request) {
-        try {
-            authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(
-                            request.getEmail(),
-                            request.getPassword()
-                    )
-            );
-        } catch (AuthenticationException ex) {
-            throw new RuntimeException("Invalid credentials");
+
+        User loginUser = userRepository.findByEmail(request.getEmail()).orElseThrow(()-> new RuntimeException("user not founded"));
+        if (loginUser.getValidOtp()){
+            try {
+                authenticationManager.authenticate(
+                        new UsernamePasswordAuthenticationToken(
+                                request.getEmail(),
+                                request.getPassword()
+                        )
+                );
+            } catch (AuthenticationException ex) {
+                return AuthenticationResponse.builder().token(null).message("invalid credentials").build();
+            }
+        }
+        else {
+            return AuthenticationResponse.builder().token(null).message("OTP Validation failed !").build();
         }
 
-        var user = userRepository.findByEmail(request.getEmail()).orElseThrow();
+        User user = userRepository.findByEmail(request.getEmail()).orElseThrow();
         var jwtToken = jwtService.generateTokenFromUserDetailes(user);
-        return AuthenticationResponse.builder().token(jwtToken).build();
+        return AuthenticationResponse.builder().token(jwtToken).message("Authentication Successful ").build();
+
     }
 }

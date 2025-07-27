@@ -31,6 +31,10 @@ public class User implements UserDetails { // user details is the interface
 
     private String password; // change the name to make override for get password and then return it to what is it
 
+    private String Otp;
+
+    private Boolean validOtp =false;
+
     @Enumerated(EnumType.STRING)
      private Role role;
 

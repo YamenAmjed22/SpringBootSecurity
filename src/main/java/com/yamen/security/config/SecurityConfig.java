@@ -29,7 +29,9 @@ public class SecurityConfig {
                 .authorizeHttpRequests()
                 .requestMatchers(
                         "/api/v1/auth/**",
-                        "/api/v1/auth/authenticate")
+                        "/api/v1/auth/authenticate",
+                        "api/v1/auth/otpcheack")
+
                 .permitAll()
                 .anyRequest()
                 .authenticated()
