@@ -5,6 +5,8 @@ import com.yamen.security.Enum.Role;
 import com.yamen.security.Entity.User;
 import com.yamen.security.Repos.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.AuthenticationException;
@@ -37,6 +39,7 @@ public class AuthenticationService {
         User user = userRepository.findByEmail(otpCheckReq.email).orElseThrow(RuntimeException::new);
         if (otpCheckReq.otp.equals(user.getOtp())  ){
             user.setValidOtp(true);
+            user.setOtp(null);
             userRepository.save(user);
             return "The otp is valid";
         }
@@ -47,8 +50,10 @@ public class AuthenticationService {
         }
     }
 
-    public User register(RegisterRequest request) {
-    // TODO : here where we will check unique for user name
+    public ResponseEntity<String> register(RegisterRequest request) {
+        if (userRepository.findByEmail(request.getEmail())!=null) {
+            return new ResponseEntity<>("Email already in use", HttpStatus.CONFLICT);
+        }
         var user = User.builder()
                 .firstName(request.getFirstName())
                 .lastName(request.getLastName())
@@ -60,7 +65,7 @@ public class AuthenticationService {
                 .build();
         userRepository.save(user);
 
-        return user;
+        return new ResponseEntity<>("User created", HttpStatus.CREATED);
     }
 
     public AuthenticationResponse authenticate(AuthenticationRequest request) {
