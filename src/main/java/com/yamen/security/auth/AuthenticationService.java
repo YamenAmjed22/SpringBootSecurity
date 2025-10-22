@@ -13,6 +13,8 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 import java.util.Random;
 
 @Service
@@ -48,28 +50,48 @@ public class AuthenticationService {
         }
     }
 
-    public ResponseEntity<String> register(RegisterRequest request) {
-        if (userRepository.findByEmail(request.getEmail())!=null) {
-            return new ResponseEntity<>("Email already in use", HttpStatus.CONFLICT);
-        }
-        var user = User.builder()
-                .firstName(request.getFirstName())
-                .lastName(request.getLastName())
-                .email(request.getEmail())
-                .password(passwordEncoder.encode(request.getPassword()))
-                .role(Role.USER)
-                .Otp(generateOtp())
-                .validOtp(false)
-                .build();
-        userRepository.save(user);
+    public ResponseEntity<RegisterResponse> register(RegisterRequest request) {
+        if (userRepository.findByEmail(request.getEmail()).isPresent()) {
+            return new ResponseEntity<>(new RegisterResponse("Email already in use"), HttpStatus.CREATED);
 
-        return new ResponseEntity<>("User created", HttpStatus.CREATED);
+        }
+        if (!request.getConfirmPassword().equals(request.getPassword())) {
+            return new ResponseEntity<>(new RegisterResponse("Passwords do not match"), HttpStatus.CREATED);
+
+        }
+        else {
+            var user = User.builder()
+                    .firstName(request.getFirstName())
+                    .lastName(request.getLastName())
+                    .email(request.getEmail())
+                    .password(passwordEncoder.encode(request.getPassword()))
+                    .confirmPassword(passwordEncoder.encode(request.getConfirmPassword()))
+                    .role(Role.USER)
+                    .Otp(generateOtp())
+                    .validOtp(true)
+                    .build();
+
+            userRepository.save(user);
+
+            return new ResponseEntity<>(new RegisterResponse("User created"), HttpStatus.CREATED);
+
+        }
     }
 
-    public AuthenticationResponse authenticate(AuthenticationRequest request) {
+    public ResponseEntity<AuthenticationResponse> authenticate(AuthenticationRequest request) {
 
-        User loginUser = userRepository.findByEmail(request.getEmail()).orElseThrow(()-> new RuntimeException("user not founded"));
-        if (loginUser.getValidOtp()){
+        Optional<User> optionalUser = userRepository.findByEmail(request.getEmail());
+        if (optionalUser.isEmpty()) {
+            AuthenticationResponse response = AuthenticationResponse.builder()
+                    .token(null)
+                    .message("User not found")
+                    .build();
+            return new ResponseEntity<>(response, HttpStatus.NOT_FOUND); // Or HttpStatus.CONFLICT if you prefer
+        }
+
+        User loginUser = optionalUser.get();
+
+        if (loginUser.getValidOtp()) {
             try {
                 authenticationManager.authenticate(
                         new UsernamePasswordAuthenticationToken(
@@ -78,16 +100,29 @@ public class AuthenticationService {
                         )
                 );
             } catch (AuthenticationException ex) {
-                return AuthenticationResponse.builder().token(null).message("invalid credentials").build();
+                AuthenticationResponse response = AuthenticationResponse.builder()
+                        .token(null)
+                        .message("Invalid credentials")
+                        .build();
+                return new ResponseEntity<>(response, HttpStatus.CONFLICT);
             }
-        }
-        else {
-            return AuthenticationResponse.builder().token(null).message("OTP Validation failed !").build();
+        } else {
+            AuthenticationResponse response = AuthenticationResponse.builder()
+                    .token(null)
+                    .message("You need to check OTP")
+                    .build();
+            return new ResponseEntity<>(response, HttpStatus.CONFLICT);
         }
 
-        User user = userRepository.findByEmail(request.getEmail()).orElseThrow();
-        var jwtToken = jwtService.generateTokenFromUserDetailes(user);
-        return AuthenticationResponse.builder().token(jwtToken).message("Authentication Successful ").build();
+        // Successful authentication
+        var jwtToken = jwtService.generateTokenFromUserDetailes(loginUser);
+        AuthenticationResponse response = AuthenticationResponse.builder()
+                .token(jwtToken)
+                .message("Authentication Successful")
+                .build();
 
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
+
+
 }

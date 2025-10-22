@@ -1,12 +1,8 @@
 package com.yamen.security.auth;
 
-import com.yamen.security.Entity.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 // TODO : This is my task ==> for this weak end Yamen i hope you do this
 //  i need to Make OTP for my Project To check from email
@@ -14,20 +10,21 @@ import org.springframework.web.bind.annotation.RestController;
 //  and change the login methode to use otp check
 @RestController
 @RequestMapping("/api/v1/auth")
+@CrossOrigin("*")
 @RequiredArgsConstructor
 public class AuthenticationController {
 
     private final AuthenticationService authenticationService;
 
     @PostMapping("/register")
-    public ResponseEntity<String> register(@RequestBody RegisterRequest request) throws Exception {
+    public ResponseEntity<RegisterResponse> register(@RequestBody RegisterRequest request) throws Exception {
        return authenticationService.register(request) ;
     }
 
 
     @PostMapping("/authenticate")
     public ResponseEntity<AuthenticationResponse> authenticated(@RequestBody AuthenticationRequest request) throws Exception {
-        return  ResponseEntity.ok(authenticationService.authenticate(request));
+        return authenticationService.authenticate(request);
 
     }
 
