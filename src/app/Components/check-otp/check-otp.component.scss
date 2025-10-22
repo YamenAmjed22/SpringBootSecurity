@@ -1,0 +1,136 @@
+.container {
+  height: 100svh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #f8fafc;
+  padding: 20px;
+  font-family: 'Poppins', sans-serif;
+}
+
+.otp-wrapper {
+  max-width: 480px;
+  width: 100%;
+  padding: 2.5rem 2rem;
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: -50px;
+    left: -50px;
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    background: rgba(127, 29, 255, 0.1);
+  }
+
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: -80px;
+    right: -80px;
+    width: 300px;
+    height: 300px;
+    border-radius: 50%;
+    background: rgba(127, 29, 255, 0.1);
+  }
+
+  h2 {
+    font-size: 2rem;
+    color: #4f46e5;
+    margin-bottom: 1rem;
+    font-weight: 600;
+    z-index: 1;
+    position: relative;
+  }
+
+  .instruction {
+    font-size: 1rem;
+    color: #64748b;
+    margin-bottom: 2rem;
+    z-index: 1;
+    position: relative;
+  }
+
+  form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    z-index: 1;
+    position: relative;
+  }
+
+  input {
+    padding: 14px 16px;
+    border-radius: 10px;
+    border: 1px solid #d1d5db;
+    background: #f9fafb;
+    color: #1e293b;
+    font-size: 1.1rem;
+    text-align: center;
+    letter-spacing: 0.3rem;
+    transition: all 0.3s ease;
+
+    &:focus {
+      outline: none;
+      border-color: #4f46e5;
+      box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.2);
+      background: #ffffff;
+    }
+  }
+
+  button {
+    padding: 14px;
+    border-radius: 10px;
+    border: none;
+    background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+    color: white;
+    font-weight: 600;
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 6px rgba(79, 70, 229, 0.2);
+
+    &:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 15px rgba(79, 70, 229, 0.3);
+    }
+
+    &:disabled {
+      background: #888;
+      color: #333;
+      cursor: not-allowed;
+      box-shadow: none;
+    }
+  }
+
+  .description {
+    margin-top: 1.5rem;
+    font-size: 0.95rem;
+    color: #64748b;
+    z-index: 1;
+    position: relative;
+  }
+}
+
+/* Responsive adjustments */
+@media (max-width: 600px) {
+  .otp-wrapper {
+    padding: 2rem 1.5rem;
+    border-radius: 12px;
+
+    h2 {
+      font-size: 1.8rem;
+    }
+
+    .instruction {
+      font-size: 0.95rem;
+    }
+  }
+}

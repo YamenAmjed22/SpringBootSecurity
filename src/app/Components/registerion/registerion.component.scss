@@ -1,0 +1,312 @@
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    body {
+      background-color: #f8fafc;
+    }
+
+    .registration-container {
+      display: flex;
+      flex-direction: column;
+      max-width: 1200px;
+      margin: 20px auto;
+      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+      border-radius: 16px;
+      overflow: hidden;
+      background: white;
+    }
+
+    @media (min-width: 900px) {
+      .registration-container {
+        flex-direction: row;
+        margin: 40px auto;
+      }
+    }
+
+    .left-panel {
+      background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+      color: white;
+      padding: 40px 30px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .left-panel::before {
+      content: '';
+      position: absolute;
+      top: -50px;
+      left: -50px;
+      width: 200px;
+      height: 200px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.1);
+    }
+
+    .left-panel::after {
+      content: '';
+      position: absolute;
+      bottom: -80px;
+      right: -80px;
+      width: 300px;
+      height: 300px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.1);
+    }
+
+    @media (min-width: 900px) {
+      .left-panel {
+        flex: 1;
+        padding: 60px 40px;
+        border-radius: 16px 0 0 16px;
+      }
+    }
+
+    .logo {
+      font-size: 28px;
+      font-weight: 700;
+      margin-bottom: 30px;
+      color: white;
+      display: flex;
+      align-items: center;
+      z-index: 1;
+    }
+
+    .logo i {
+      margin-right: 10px;
+      font-size: 32px;
+    }
+
+    .left-panel h2 {
+      margin: 20px 0;
+      font-weight: 600;
+      font-size: 28px;
+      z-index: 1;
+    }
+
+    .left-panel p {
+      line-height: 1.6;
+      margin-bottom: 30px;
+      max-width: 400px;
+      z-index: 1;
+    }
+
+    .benefits {
+      text-align: left;
+      margin-top: 20px;
+      list-style-type: none;
+      z-index: 1;
+    }
+
+    .benefits li {
+      margin-bottom: 15px;
+      display: flex;
+      align-items: center;
+    }
+
+    .benefits i {
+      margin-right: 10px;
+      color: #4f46e5;
+      background: white;
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .right-panel {
+      padding: 40px 30px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    @media (min-width: 900px) {
+      .right-panel {
+        flex: 1.2;
+        padding: 60px 50px;
+        border-radius: 0 16px 16px 0;
+      }
+    }
+
+    .form-header {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .form-header h2 {
+      color: #1e293b;
+      font-size: 28px;
+      margin-bottom: 10px;
+      font-weight: 600;
+    }
+
+    .form-header p {
+      color: #64748b;
+      font-size: 16px;
+    }
+
+    form {
+      margin-top: 20px;
+    }
+
+    .input-group {
+      margin-bottom: 24px;
+    }
+
+    .input-group label {
+      display: block;
+      margin-bottom: 8px;
+      color: #374151;
+      font-weight: 500;
+      font-size: 14px;
+    }
+
+    .input-group input {
+      width: 100%;
+      padding: 14px 16px;
+      border: 1px solid #d1d5db;
+      border-radius: 10px;
+      font-size: 16px;
+      transition: all 0.3s;
+      background: #f9fafb;
+    }
+
+    .input-group input:focus {
+      border-color: #4f46e5;
+      box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.2);
+      outline: none;
+      background: white;
+    }
+
+    .password-strength {
+      height: 6px;
+      margin-top: 8px;
+      border-radius: 3px;
+      background: #e5e7eb;
+      overflow: hidden;
+    }
+
+    .strength-meter {
+      height: 100%;
+      transition: all 0.3s ease;
+    }
+
+    .terms {
+      display: flex;
+      align-items: flex-start;
+      margin: 25px 0 20px;
+    }
+
+    .terms input {
+      margin-top: 5px;
+      margin-right: 12px;
+      accent-color: #4f46e5;
+    }
+
+    .terms label {
+      color: #374151;
+      line-height: 1.5;
+      font-size: 14px;
+    }
+
+    .terms a {
+      color: #4f46e5;
+      text-decoration: none;
+      font-weight: 500;
+    }
+
+    .terms a:hover {
+      text-decoration: underline;
+    }
+
+    .submit-btn {
+      width: 100%;
+      padding: 16px;
+      background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+      color: white;
+      border: none;
+      border-radius: 10px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s;
+      box-shadow: 0 4px 6px rgba(79, 70, 229, 0.2);
+    }
+
+    .submit-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 15px rgba(79, 70, 229, 0.3);
+    }
+
+    .login-link {
+      text-align: center;
+      margin-top: 25px;
+      color: #64748b;
+      font-size: 15px;
+    }
+
+    .login-link a {
+      color: #4f46e5;
+      text-decoration: none;
+      font-weight: 600;
+      margin-left: 5px;
+    }
+
+    .login-link a:hover {
+      text-decoration: underline;
+    }
+
+    .error {
+      color: #ef4444;
+      font-size: 13px;
+      margin-top: 6px;
+      display: flex;
+      align-items: center;
+    }
+
+    .error::before {
+      content: '!';
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 16px;
+      height: 16px;
+      background: #ef4444;
+      color: white;
+      border-radius: 50%;
+      margin-right: 6px;
+      font-size: 12px;
+      font-weight: bold;
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 600px) {
+      .registration-container {
+        margin: 10px;
+        border-radius: 12px;
+      }
+      
+      .left-panel, .right-panel {
+        padding: 30px 20px;
+      }
+      
+      .left-panel h2 {
+        font-size: 24px;
+      }
+      
+      .form-header h2 {
+        font-size: 24px;
+      }
+    }   

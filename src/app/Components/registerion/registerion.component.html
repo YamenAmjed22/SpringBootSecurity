@@ -1,0 +1,101 @@
+<div class="registration-container">
+  <div class="left-panel">
+    <div class="logo">
+      <i class="fas fa-store"></i>
+      <span>Emarket</span>
+    </div>
+    <h2>Join Our Marketplace</h2>
+    <p>Sign up to start buying and selling in the most trusted marketplace</p>
+    <ul class="benefits">
+      <li><i class="fas fa-check"></i> Access thousands of products</li>
+      <li><i class="fas fa-check"></i> Secure payment system</li>
+      <li><i class="fas fa-check"></i> Fast and reliable delivery</li>
+      <li><i class="fas fa-check"></i> 24/7 Customer support</li>
+    </ul>
+  </div>
+
+  <div class="right-panel">
+    <div class="form-header">
+      <h2>Create Account</h2>
+      <p>Fill in your details to get started</p>
+    </div>
+
+    <form [formGroup]="registrationForm" (ngSubmit)="onSubmit()">
+      <!-- First Name -->
+      <div class="input-group">
+        <label for="firstName">First Name</label>
+        <input type="text" id="firstName" formControlName="firstName" placeholder="Enter your first name">
+        <div class="error" *ngIf="f['firstName'].invalid && (f['firstName'].touched || submitted)">
+          <span *ngIf="f['firstName'].errors?.['required']">First name is required</span>
+          <span *ngIf="f['firstName'].errors?.['minlength']">First name must be at least 3 characters</span>
+        </div>
+      </div>
+
+      <!-- Last Name -->
+      <div class="input-group">
+        <label for="lastName">Last Name</label>
+        <input type="text" id="lastName" formControlName="lastName" placeholder="Enter your last name">
+        <div class="error" *ngIf="f['lastName'].invalid && (f['lastName'].touched || submitted)">
+          <span *ngIf="f['lastName'].errors?.['required']">Last name is required</span>
+          <span *ngIf="f['lastName'].errors?.['minlength']">Last name must be at least 3 characters</span>
+        </div>
+      </div>
+
+      <!-- Email -->
+      <div class="input-group">
+        <label for="email">Email Address</label>
+        <input type="email" id="email" formControlName="email" placeholder="Enter your email">
+        <div class="error" *ngIf="f['email'].invalid && (f['email'].touched || submitted)">
+          <span *ngIf="f['email'].errors?.['required']">Email is required</span>
+          <span *ngIf="f['email'].errors?.['email']">Please enter a valid email address</span>
+        </div>
+      </div>
+
+      <!-- Password -->
+      <div class="input-group">
+        <label for="password">Password</label>
+        <input type="password" id="password" formControlName="password" placeholder="Create a strong password"
+          (input)="checkPasswordStrength()">
+        <div class="password-strength">
+          <div class="strength-meter" [style.width.%]="passwordStrength"
+            [style.background]="getPasswordStrengthColor()"></div>
+        </div>
+        <div class="error" *ngIf="f['password'].invalid && (f['password'].touched || submitted)">
+          <span *ngIf="f['password'].errors?.['required']">Password is required</span>
+          <span *ngIf="f['password'].errors?.['minlength']">Password must be at least 8 characters</span>
+          <span *ngIf="f['password'].errors?.['invalidPassword']">Password must contain letters and numbers</span>
+        </div>
+      </div>
+
+      <!-- Confirm Password -->
+      <div class="input-group">
+        <label for="confirmPassword">Confirm Password</label>
+        <input type="password" id="confirmPassword" formControlName="confirmPassword" placeholder="Confirm your password">
+        <div class="error" *ngIf="f['confirmPassword'].invalid && (f['confirmPassword'].touched || submitted)">
+          <span *ngIf="f['confirmPassword'].errors?.['required']">Confirm password is required</span>
+          <span *ngIf="f['confirmPassword'].errors?.['mustMatch']">Passwords do not match</span>
+        </div>
+      </div>
+
+      <!-- Terms -->
+      <div class="terms">
+        <input type="checkbox" id="agreeTerms" formControlName="agreeTerms">
+        <label for="agreeTerms">
+          I agree to the <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>
+        </label>
+      </div>
+      <div class="error" *ngIf="f['agreeTerms'].invalid && (f['agreeTerms'].touched || submitted)">
+        You must agree to the terms
+      </div>
+
+      <!-- Submit -->
+      <button type="submit" class="submit-btn" [disabled]="isSubmitting">
+        {{ isSubmitting ? 'Account Created ' : 'Create Account' }}
+      </button>
+    </form>
+
+    <div class="login-link">
+      Already have an account? <a (click)="goToLoginPage()">Log In</a>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,56 @@
+<div class="login-container">
+  <!-- Left Panel -->
+  <div class="login-left">
+    <h2>Welcome Back!</h2>
+    <p>We are excited to see you again!</p>
+    <ul class="benefits">
+      <li><i class="pi pi-lock"></i> Secure Access</li>
+      <li><i class="pi pi-bolt"></i> Fast Authentication</li>
+      <li><i class="pi pi-history"></i> Pick Up Where You Left Off</li>
+    </ul>
+  </div>
+
+  <!-- Right Panel -->
+  <div class="login-right">
+    <div class="form-header">
+      <h2>Sign In</h2>
+      <p>Enter your credentials to continue</p>
+    </div>
+
+    <form [formGroup]="LoginForm" (ngSubmit)="onSubmit()">
+      <div class="input-group">
+        <label for="email">Email</label>
+        <input id="email" type="email" formControlName="email" placeholder="Enter your email">
+        <div class="error" *ngIf="LoginForm.get('email')?.touched && LoginForm.get('email')?.invalid">
+          <div *ngIf="LoginForm.get('email')?.errors?.['required']">
+            Email is required.
+          </div>
+          <div *ngIf="LoginForm.get('email')?.errors?.['email']">
+            Invalid email format.
+          </div>
+        </div>
+      </div>
+
+      <div class="input-group">
+        <label for="password">Password</label>
+        <input id="password" type="password" formControlName="password" placeholder="Enter your password">
+        <div class="error" *ngIf="LoginForm.get('password')?.touched && LoginForm.get('password')?.invalid">
+          <div *ngIf="LoginForm.get('password')?.errors?.['required']">
+            Password is required.
+          </div>
+          <div *ngIf="LoginForm.get('password')?.errors?.['minlength']">
+            Password must be at least 6 characters.
+          </div>
+        </div>
+      </div>
+
+      <button type="submit" [disabled]="LoginForm.invalid">Sign In</button>
+
+      <!-- Success and error messages -->
+      <div *ngIf="successMessage" class="success">{{ successMessage }}</div>
+      <div *ngIf="errorMessage" class="error">{{ errorMessage }}</div>
+
+      <p class="register-text">Don't have an account? <a (click)="goToRegister()">Sign Up</a></p>
+    </form>
+  </div>
+</div>
